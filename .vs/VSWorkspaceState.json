@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SortingAlgorythms"
   ],
-  "SelectedNode": "\\SortingAlgorythms.sln",
+  "SelectedNode": "\\SortingAlgorythms\\MainWindow.xaml.cs",
   "PreviewInSolutionExplorer": false
 }

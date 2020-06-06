@@ -18,11 +18,8 @@ using System.Windows.Shapes;
 
 namespace SortingAlgorythms
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     /// ctrl+k ctrl+f
-
+    /// 
     public partial class MainWindow : Window
     {
         private int[] randomNumbers = new int[20];
@@ -34,20 +31,28 @@ namespace SortingAlgorythms
             {
                 new ColumnSeries
                 {
-                    Values = new ChartValues<int> { 10, 50, 39, 50 }
+                    Values = new ChartValues<ObservableValue>
+                    {
+                        new ObservableValue(3),
+                        new ObservableValue(6),
+                        new ObservableValue(7),
+                        new ObservableValue(4),
+                        new ObservableValue(2)
+                    },
+                    Fill = Brushes.Black
                 }
             };
 
-            Labels = new[] { "Label1", "Label2"};
-            Formatter = value => value.ToString("N");
 
+            Labels = new[] { "Label1", "Label2" };
+            Formatter = value => value.ToString("N");
             DataContext = this;
             //----- LVC END -----
         }
         //----- LVC START -----
         public SeriesCollection series { get; set; }
         public string[] Labels { get; set; }
-        public Func<double, string> Formatter { get; set; }
+        public Func<int, string> Formatter { get; set; }
         //*----- LVC END -----
 
         private void MergeSortMain()
@@ -119,14 +124,67 @@ namespace SortingAlgorythms
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
             series[0].Values.Clear();
             Random rand = new Random();
             for (int i = 0; i < 20; i++)
             {
                 randomNumbers[i] = rand.Next(1, 20);
-                series[0].Values.Add(randomNumbers[i]);
+                series[0].Values.Add(new ObservableValue(randomNumbers[i]));
+            }
+            //Array.Sort(randomNumbers);
+
+
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //Random rand = new Random();
+            //int a = rand.Next(0, 20);
+            //int b = rand.Next(0, 20);
+            //int c = Int16.Parse(series[0].Values[a].ToString());
+            //series[0].Values[a] = series[0].Values[b];
+            //series[0].Values[b] = c;
+
+            for (int i = 0; i < 20; i++)
+            {
+                for (int j = i + 1; j < 20; j++)
+                {
+                    int a = getSeriesElement(i);
+                    int b = getSeriesElement(j);
+                    if (b < a)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            int c = a;
+                            setSeriesElement(i, b);
+                            setSeriesElement(j, c);
+                            System.Threading.Thread.Sleep(1000);
+                        });
+
+                    }
+                }
+
             }
 
+        }
+        public int getSeriesElement(int idx)
+        {
+            int[] seriesNumbers = new int[20];
+            series[0].Values.GetEnumerator
+            return seriesNumbers[idx];
+        }
+        public void setSeriesElement(int idx, int value)
+        {
+            int[] seriesNumbers = new int[20];
+            series[0].Values.CopyTo(seriesNumbers, 0);
+            seriesNumbers[idx] = value;
+            series[0].Values.Clear();
+            for (int i = 0; i < 20; i++)
+            {
+                series[0].Values.Add(new ObservableValue(seriesNumbers[i]));
+            }
         }
     }
 }

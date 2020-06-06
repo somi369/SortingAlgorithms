@@ -21,15 +21,17 @@
         </Grid.RowDefinitions>
         <StackPanel x:Name="StackPanel0" Grid.Column="0" >
             <Button Content="Generate Random Array" Click="Button_Click" />
-        </StackPanel>
-        <StackPanel x:Name="StackPanel1" Grid.Column="1" Grid.Row="0">
+            <Button Content="Sort stuff" Click="Button_Click_1" />
             
-            <lvc:CartesianChart Series="{Binding series}" Height="100">
+        </StackPanel>
+        <StackPanel x:Name="StackPanel1" Grid.Column="1">
+            
+            <lvc:CartesianChart x:Name="firstChart" Series="{Binding series}" Height="354" Margin="0,0,10,0">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Salesman" ></lvc:Axis>
+                    <lvc:Axis Title="X"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Sold Apps" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                    <lvc:Axis Title="Y" LabelFormatter="{Binding Formatter}" MinValue="0" MaxValue="20"></lvc:Axis>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
 
