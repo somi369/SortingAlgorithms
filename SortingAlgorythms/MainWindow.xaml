@@ -10,13 +10,10 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel x:Name="StackPanel0" Grid.Column="0" >
@@ -24,9 +21,9 @@
             <Button Content="Sort stuff" Click="Button_Click_1" />
             
         </StackPanel>
-        <StackPanel x:Name="StackPanel1" Grid.Column="1">
-            
-            <lvc:CartesianChart x:Name="firstChart" Series="{Binding series}" Height="354" Margin="0,0,10,0">
+        <StackPanel x:Name="StackPanel1" Grid.Column="1" Grid.Row="0">
+
+            <lvc:CartesianChart x:Name="firstChart" Series="{Binding LiveChartValueSeries}"  Margin="10,10,10.2,10" Height="404">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Title="X"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
@@ -34,19 +31,10 @@
                     <lvc:Axis Title="Y" LabelFormatter="{Binding Formatter}" MinValue="0" MaxValue="20"></lvc:Axis>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
-
-
-
-
-        </StackPanel>
-        <StackPanel x:Name="StackPanel2" Grid.Column="2">
             
         </StackPanel>
-        <StackPanel x:Name="StackPanel3" Grid.Column="3">
 
-        </StackPanel>
-        <StackPanel x:Name="StackPanel4" Grid.Column="4">
 
-        </StackPanel>
+
     </Grid>
 </Window>
