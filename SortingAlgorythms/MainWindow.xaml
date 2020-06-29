@@ -17,7 +17,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel x:Name="StackPanel0" Grid.Column="0" >
-            <Button Content="Generate Random Array" Click="Button_Click" x:Name="BTN"/>
+            <Button Content="Unique values" x:Name="UniqueValuesBTN" Click="UniqueValuesBTN_Click"/>
             <Button Content="Sort stuff" Click="Button_Click_1" />
             <Button Content="test" Click="Button_Click_2" />
         </StackPanel>
