@@ -19,6 +19,7 @@ namespace SortingAlgorythms
             InitializeComponent();
             //Livechart
             InitializeLiveChart();
+            LiveChartArray = new int[20];
         }
 
         //-----------LiveChart START-----------
@@ -46,19 +47,17 @@ namespace SortingAlgorythms
 
 
         //-----------ETC START-----------
-        private int[] randomNumbers = new int[20];
+        private int[] LiveChartArray;
         //-----------ETC END-----------
 
         //Generates random array with unique values
         private void UniqueValuesBTN_Click(object sender, RoutedEventArgs e)
         {
-            //Thread UniqueValuesThread = new Thread(AddUniqueValesToChart);
-            //UniqueValuesThread.Start();
             new Thread(() =>
             {
                 //Button disable
                 Dispatcher.BeginInvoke(new Action(() => { UniqueValuesBTN.IsEnabled = false; }));
-                
+
                 // Clear Chart values
                 LiveChartValueSeries[0].Values.Clear();
 
@@ -83,22 +82,43 @@ namespace SortingAlgorythms
                 //Button enable
                 Dispatcher.BeginInvoke(new Action(() => { UniqueValuesBTN.IsEnabled = true; }));
             }).Start();
+        }
 
+        private void setLiveChartValueSeries()
+        {
+            new Thread(() =>
+            {
+                //LiveChartArray = new int[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+                ColumnSeries NewColumnSeries = new ColumnSeries { Values = new ChartValues<int>(LiveChartArray) };
+                NewColumnSeries.Fill = Brushes.Black;
+                LiveChartValueSeries[0] = NewColumnSeries;
+
+            }).Start();
+        }
+
+        private void getLiveChartValueSeries()
+        {
+            new Thread(() =>
+            {
+
+                
+            }).Start();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+
         {
 
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
+            setLiveChartValueSeries();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
 
