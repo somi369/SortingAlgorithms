@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <StackPanel x:Name="StackPanel0" Grid.Column="0" >
             <Button Content="Unique values" x:Name="UniqueValuesBTN" Click="UniqueValuesBTN_Click"/>
-            <Button Content="Sort stuff" Click="Button_Click_1" />
+            <Button Content="Sort stuff" x:Name="SortBTN" Click="SortBTN_Click" />
             <Button Content="test" Click="Button_Click_2" />
         </StackPanel>
         <StackPanel x:Name="StackPanel1" Grid.Column="1" Grid.Row="0">
