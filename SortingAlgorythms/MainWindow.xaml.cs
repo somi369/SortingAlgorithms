@@ -6,15 +6,16 @@ using System.Windows;
 using System.Windows.Media;
 using System.Threading;
 using System.Windows.Threading;
-using System.ComponentModel;
-using LiveCharts.Definitions.Series;
 
 namespace SortingAlgorythms
 {
-    /// ctrl+k ctrl+f
-    /// 
     public partial class MainWindow : Window
     {
+
+        public SeriesCollection LiveChartValueSeries { get; set; }
+        public string[] Labels { get; set; }
+        public Func<int, string> Formatter { get; set; }
+        private int[] LiveChartArray;
         public MainWindow()
         {
             InitializeComponent();
@@ -23,11 +24,7 @@ namespace SortingAlgorythms
             LiveChartArray = new int[20];
 
         }
-
-        //-----------LiveChart START-----------
-        public SeriesCollection LiveChartValueSeries { get; set; }
-        public string[] Labels { get; set; }
-        public Func<int, string> Formatter { get; set; }
+        
         private void InitializeLiveChart()
         {
             LiveChartValueSeries = new SeriesCollection();
@@ -39,14 +36,7 @@ namespace SortingAlgorythms
             Formatter = value => value.ToString("N");
             DataContext = this;
         }
-        //-----------LiveChart END-----------
-
-
-        //-----------ETC START-----------
-        private int[] LiveChartArray;
-        //-----------ETC END-----------
-
-        //Generates random array with unique values
+        
         private void UniqueValuesBTN_Click(object sender, RoutedEventArgs e)
         {
             new Thread(() =>
@@ -82,43 +72,6 @@ namespace SortingAlgorythms
                 //Button enable
                 Dispatcher.BeginInvoke(new Action(() => { UniqueValuesBTN.IsEnabled = true; }));
             }).Start();
-        }
-
-        private void setLiveChartValueSeries()
-        {
-            new Thread(() =>
-            {
-                //LiveChartArray = new int[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-                ColumnSeries NewColumnSeries = new ColumnSeries { Values = new ChartValues<int>(LiveChartArray) };
-                NewColumnSeries.Fill = Brushes.Black;
-                LiveChartValueSeries[0] = NewColumnSeries;
-
-            }).Start();
-        }
-
-        private void getLiveChartValueSeries()
-        {
-            new Thread(() =>
-            {
-
-
-            }).Start();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-
-        {
-
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            setLiveChartValueSeries();
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void SortBTN_Click(object sender, RoutedEventArgs e)
@@ -176,7 +129,6 @@ namespace SortingAlgorythms
                 }
             }).Start();
         }
-
         private void ChangeColorToRed(ColumnSeries x)
         {
 
