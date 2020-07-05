@@ -16,14 +16,14 @@ namespace SortingAlgorythms
         public string[] Labels { get; set; }
         public Func<int, string> Formatter { get; set; }
 
-        int SizeOfArray;
+        int SizeOfChartArray;
 
         public MainWindow()
         {
             InitializeComponent();
             //Livechart
             InitializeLiveChart();
-            SizeOfArray = 20;
+            SizeOfChartArray = 20;
         }
 
         private void InitializeLiveChart()
@@ -106,8 +106,8 @@ namespace SortingAlgorythms
 
                             Dispatcher.Invoke(new Action(() =>
                             {
-                                ChangeColorToGreen((ColumnSeries)LiveChartValueSeries[i]);
-                                ChangeColorToGreen((ColumnSeries)LiveChartValueSeries[j]);
+                                ChangeColorToGreen(i);
+                                ChangeColorToGreen(j);
                             }));
                             Thread.Sleep(100);
                         }
@@ -115,15 +115,15 @@ namespace SortingAlgorythms
                         {
                             Dispatcher.Invoke(new Action(() =>
                             {
-                                ChangeColorToRed((ColumnSeries)LiveChartValueSeries[i]);
-                                ChangeColorToRed((ColumnSeries)LiveChartValueSeries[j]);
+                                ChangeColorToRed(i);
+                                ChangeColorToRed(j);
                             }));
                             Thread.Sleep(100);
                         }
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            ChangeColorToBlack((ColumnSeries)LiveChartValueSeries[i]);
-                            ChangeColorToBlack((ColumnSeries)LiveChartValueSeries[j]);
+                            ChangeColorToBlack(i);
+                            ChangeColorToBlack(j);
                         }));
                         Thread.Sleep(100);
                     }
@@ -135,9 +135,9 @@ namespace SortingAlgorythms
 
         private void MergeSortBTN_Click(object sender, RoutedEventArgs e)
         {
-            int[] ArrayOfValues = new int[SizeOfArray];
+            int[] ArrayOfValues = new int[SizeOfChartArray];
 
-            for (int i = 0; i < SizeOfArray; i++)
+            for (int i = 0; i < SizeOfChartArray; i++)
             {
                 ArrayOfValues[i] = (int)LiveChartValueSeries[i].Values[0];
             }
@@ -232,38 +232,117 @@ namespace SortingAlgorythms
 
 
         //Quicksort
+        private void QuickSortBTN_Click(object sender, RoutedEventArgs e)
+        {
+            int[] ChartValueArray = new int[SizeOfChartArray];
+            for (int i = 0; i < SizeOfChartArray; i++)
+            {
+                ChartValueArray[i] = getSeriesElement(i);
+            }
+            new Thread(() =>
+            {
+                Quick_Sort(ChartValueArray, 0, SizeOfChartArray - 1);
+            }).Start();
+            //string str="";
+            //foreach (int x in ChartValueArray)
+            //{
+            //    str += "<" + x;
+            //}
+            //MessageBox.Show(str);
+        }
+        private void Quick_Sort(int[] arr, int left, int right)
+        {
+            if (left < right)
+            {
+                int pivot = Partition(arr, left, right);
+
+                if (pivot > 1)
+                {
+                    Quick_Sort(arr, left, pivot - 1);
+                }
+                if (pivot + 1 < right)
+                {
+                    Quick_Sort(arr, pivot + 1, right);
+                }
+            }
+
+        }
+
+        private int Partition(int[] arr, int left, int right)
+        {
+            ChangeColorToBlue(left);
+
+            Thread.Sleep(200);
+
+            int pivot = arr[left];
+
+            Thread.Sleep(200);
+
+            ChangeColorToBlack(left);
+
+
+
+            while (true)
+            {
+
+                while (arr[left] < pivot)
+                {
+                    left++;
+                }
+
+                while (arr[right] > pivot)
+                {
+                    right--;
+                }
+
+                if (left < right)
+                {
+                    if (arr[left] == arr[right])
+                    {
+                        ChangeColorToRed(left);
+                        ChangeColorToRed(right);
+
+                        Thread.Sleep(200);
+
+                        return right;
+                    }
+
+                    ChangeColorToGreen(left);
+                    ChangeColorToGreen(right);
+
+                    Thread.Sleep(200);
+
+                    int temp = arr[left];
+
+                    setSeriesElement(left, arr[right]);
+                    setSeriesElement(right, temp);
+
+                    arr[left] = arr[right];
+                    arr[right] = temp;
+                    
+                    Thread.Sleep(200);
+
+                    ChangeColorToBlack(left);
+                    ChangeColorToBlack(right);
+                }
+                else
+                {
+                    return right;
+                }
+            }
+        }
 
         //Heapsort
 
 
         //Bubble
-
-
-        private void ChangeColorToRed(ColumnSeries x)
-        {
-
-            x.Fill = Brushes.Red;
-        }
-        private void ChangeColorToGreen(ColumnSeries x)
-        {
-            x.Fill = Brushes.LightGreen;
-        }
-        private void ChangeColorToBlack(ColumnSeries x)
-        {
-            x.Fill = Brushes.Black;
-        }
-        private void ChangeColorToBlue(ColumnSeries x)
-        {
-            x.Fill = Brushes.Blue;
-        }
-
         private void BubbleSortBTN_Click(object sender, RoutedEventArgs e)
         {
             new Thread(() =>
             {
-                for (int i = 0; i < SizeOfArray; i++)
+                for (int i = 0; i < SizeOfChartArray; i++)
                 {
-                    for (int j = 0; j < SizeOfArray - i-1; j++)
+                    for (int j = 0; j < SizeOfChartArray - i - 1; j++)
                     {
                         //Highlight elements
                         int a = Convert.ToInt32(LiveChartValueSeries[j].Values[0]);
@@ -281,15 +360,15 @@ namespace SortingAlgorythms
                         {
                             //Highlight pass
                             LiveChartValueSeries[j].Values.Clear();
-                            LiveChartValueSeries[j+1].Values.Clear();
+                            LiveChartValueSeries[j + 1].Values.Clear();
 
                             LiveChartValueSeries[j].Values.Add(b);
-                            LiveChartValueSeries[j+1].Values.Add(a);
+                            LiveChartValueSeries[j + 1].Values.Add(a);
 
                             Dispatcher.Invoke(new Action(() =>
                             {
-                                ChangeColorToGreen((ColumnSeries)LiveChartValueSeries[j]);
-                                ChangeColorToGreen((ColumnSeries)LiveChartValueSeries[j+1]);
+                                ChangeColorToGreen(j);
+                                ChangeColorToGreen(j + 1);
                             }));
                             Thread.Sleep(100);
                         }
@@ -298,8 +377,8 @@ namespace SortingAlgorythms
                             //Highlight fail
                             Dispatcher.Invoke(new Action(() =>
                             {
-                                ChangeColorToRed((ColumnSeries)LiveChartValueSeries[j]);
-                                ChangeColorToRed((ColumnSeries)LiveChartValueSeries[j+1]);
+                                ChangeColorToRed(j);
+                                ChangeColorToRed(j + 1);
                             }));
                             Thread.Sleep(100);
                         }
@@ -307,13 +386,56 @@ namespace SortingAlgorythms
                         //Remove highlight
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            ChangeColorToBlack((ColumnSeries)LiveChartValueSeries[j]);
-                            ChangeColorToBlack((ColumnSeries)LiveChartValueSeries[j+1]);
+                            ChangeColorToBlack(j);
+                            ChangeColorToBlack(j + 1);
                         }));
                         Thread.Sleep(100);
                     }
                 }
             }).Start();
         }
+
+        private void ChangeColorToRed(int index)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Red;
+            }));
+        }
+        private void ChangeColorToGreen(int index)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.LightGreen;
+            }));
+        }
+        private void ChangeColorToBlack(int index)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Black;
+            }));
+        }
+
+        private void ChangeColorToBlue(int index)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Blue;
+            }));
+        }
+
+        private int getSeriesElement(int index)
+        {
+            int result = Convert.ToInt32(LiveChartValueSeries[index].Values[0]);
+            return result;
+        }
+        private void setSeriesElement(int index, int value)
+        {
+            LiveChartValueSeries[index].Values.Clear();
+            LiveChartValueSeries[index].Values.Add(value);
+        }
+
+
     }
 }
