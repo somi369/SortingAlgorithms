@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Threading;
 using System.Windows.Threading;
+using System.Collections.Generic;
 
 namespace SortingAlgorythms
 {
@@ -15,17 +16,15 @@ namespace SortingAlgorythms
         public SeriesCollection LiveChartValueSeries { get; set; }
         public string[] Labels { get; set; }
         public Func<int, string> Formatter { get; set; }
-
         int SizeOfChartArray;
-
         public MainWindow()
         {
             InitializeComponent();
             //Livechart
             InitializeLiveChart();
             SizeOfChartArray = 20;
+            CreateRandomUniqueValues();
         }
-
         private void InitializeLiveChart()
         {
             LiveChartValueSeries = new SeriesCollection();
@@ -37,7 +36,44 @@ namespace SortingAlgorythms
             Formatter = value => value.ToString("N");
             DataContext = this;
         }
-
+        private void ChangeColorToRed(int index)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Red;
+            }));
+        }
+        private void ChangeColorToGreen(int index)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.LightGreen;
+            }));
+        }
+        private void ChangeColorToBlack(int index)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Black;
+            }));
+        }
+        private void ChangeColorToBlue(int index)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Blue;
+            }));
+        }
+        private int getSeriesElement(int index)
+        {
+            int result = Convert.ToInt32(LiveChartValueSeries[index].Values[0]);
+            return result;
+        }
+        private void setSeriesElement(int index, int value)
+        {
+            LiveChartValueSeries[index].Values.Clear();
+            LiveChartValueSeries[index].Values.Add(value);
+        }
         private void UniqueValuesBTN_Click(object sender, RoutedEventArgs e)
         {
             new Thread(() =>
@@ -45,6 +81,19 @@ namespace SortingAlgorythms
                 //Button disable
                 Dispatcher.BeginInvoke(new Action(() => { UniqueValuesBTN.IsEnabled = false; }));
 
+                CreateRandomUniqueValues();
+
+                //Button enable
+                Dispatcher.BeginInvoke(new Action(() => { UniqueValuesBTN.IsEnabled = true; }));
+            }).Start();
+        }
+
+        private void CreateRandomUniqueValues()
+        {
+
+            new Thread(() =>
+            {
+                
                 // Clear Chart values
                 for (int i = 0; i < 20; i++)
                 {
@@ -70,11 +119,10 @@ namespace SortingAlgorythms
                 {
                     LiveChartValueSeries[i].Values.Add(Numbers[i]);
                 }
-                //Button enable
-                Dispatcher.BeginInvoke(new Action(() => { UniqueValuesBTN.IsEnabled = true; }));
+                
+                
             }).Start();
         }
-
         private void SortBTN_Click(object sender, RoutedEventArgs e)
         {
 
@@ -131,107 +179,134 @@ namespace SortingAlgorythms
             }).Start();
         }
 
-        //MergeSort
-
+        //MergeSort functions
         private void MergeSortBTN_Click(object sender, RoutedEventArgs e)
         {
-            int[] ArrayOfValues = new int[SizeOfChartArray];
-
+            List<int> chartValueList = new List<int>();
             for (int i = 0; i < SizeOfChartArray; i++)
             {
-                ArrayOfValues[i] = (int)LiveChartValueSeries[i].Values[0];
+                chartValueList.Add(getSeriesElement(i));
             }
-            mergeSort(ArrayOfValues);
-        }
-        public static int[] mergeSort(int[] array)
-        {
-            int[] left;
-            int[] right;
-            int[] result = new int[array.Length];
-            //As this is a recursive algorithm, we need to have a base case to 
-            //avoid an infinite recursion and therfore a stackoverflow
-            if (array.Length <= 1)
-                return array;
-            // The exact midpoint of our array  
-            int midPoint = array.Length / 2;
-            //Will represent our 'left' array
-            left = new int[midPoint];
 
-            //if array has an even number of elements, the left and right array will have the same number of 
-            //elements
-            if (array.Length % 2 == 0)
-                right = new int[midPoint];
-            //if array has an odd number of elements, the right array will have one more element than left
-            else
-                right = new int[midPoint + 1];
-            //populate left array
-            for (int i = 0; i < midPoint; i++)
-                left[i] = array[i];
-            //populate right array   
-            int x = 0;
-            //We start our index from the midpoint, as we have already populated the left array from 0 to midpont
-            for (int i = midPoint; i < array.Length; i++)
+            List<int> indexList = new List<int>();
+            for (int i = 0; i < SizeOfChartArray; i++)
             {
-                right[x] = array[i];
-                x++;
+                indexList.Add(i);
             }
-            //Recursively sort the left array
-            left = mergeSort(left);
-            //Recursively sort the right array
-            right = mergeSort(right);
-            //Merge our two sorted arrays
-            result = merge(left, right);
-            return result;
-        }
-
-        //This method will be responsible for combining our two sorted arrays into one giant array
-        public static int[] merge(int[] left, int[] right)
-        {
-            int resultLength = right.Length + left.Length;
-            int[] result = new int[resultLength];
-            //
-            int indexLeft = 0, indexRight = 0, indexResult = 0;
-            //while either array still has an element
-            while (indexLeft < left.Length || indexRight < right.Length)
+            new Thread(() =>
             {
-                //if both arrays have elements  
-                if (indexLeft < left.Length && indexRight < right.Length)
+                chartValueList = MergeSort(chartValueList, indexList);
+                Thread.Sleep(1000);
+                for (int i = 0; i < chartValueList.Count; i++)
                 {
-                    //If item on left array is less than item on right array, add that item to the result array 
-                    if (left[indexLeft] <= right[indexRight])
+                    setSeriesElement(i, chartValueList[i]);
+                }
+
+            }).Start();
+        }
+        private List<int> MergeSort(List<int> unsorted, List<int> indexList)
+        {
+            if (unsorted.Count <= 1)
+                return unsorted;
+
+            List<int> left = new List<int>();
+            List<int> right = new List<int>();
+
+            List<int> leftIndexes = new List<int>();
+            List<int> rightIndexes = new List<int>();
+
+
+            int middle = unsorted.Count / 2;
+            for (int i = 0; i < middle; i++)  //Dividing the unsorted list
+            {
+                left.Add(unsorted[i]);
+                leftIndexes.Add(indexList[i]);
+            }
+            for (int i = middle; i < unsorted.Count; i++)
+            {
+                right.Add(unsorted[i]);
+                rightIndexes.Add(indexList[i]);
+
+            }
+
+            left = MergeSort(left, leftIndexes);
+            right = MergeSort(right, rightIndexes);
+            return Merge(left, right, leftIndexes, rightIndexes);
+        }
+
+        private List<int> Merge(List<int> left, List<int> right, List<int> leftIndexes, List<int> rightIndexes)
+        {
+            List<int> result = new List<int>();
+            List<int> indexResult = new List<int>();
+
+            while (left.Count > 0 || right.Count > 0)
+            {
+                if (left.Count > 0 && right.Count > 0)
+                {
+                    if (left.First() <= right.First())  //Comparing First two elements to see which is smaller
                     {
-                        result[indexResult] = left[indexLeft];
-                        indexLeft++;
-                        indexResult++;
+
+                        ChangeColorToGreen(leftIndexes.First());
+                        ChangeColorToGreen(rightIndexes.First());
+                        Thread.Sleep(100);
+
+                        result.Add(left.First());
+                        left.Remove(left.First());      //Rest of the list minus the first element
+
+                        indexResult.Add(leftIndexes.First());
+                        leftIndexes.Remove(leftIndexes.First());
+
+                        ChangeColorToBlack(indexResult.Last());
+                        ChangeColorToBlack(rightIndexes.First());
+                        Thread.Sleep(100);
+
                     }
-                    // else the item in the right array wll be added to the results array
                     else
                     {
-                        result[indexResult] = right[indexRight];
-                        indexRight++;
-                        indexResult++;
+                        ChangeColorToRed(leftIndexes.First());
+                        ChangeColorToRed(rightIndexes.First());
+                        Thread.Sleep(100);
+
+                        result.Add(right.First());
+                        right.Remove(right.First());
+
+                        indexResult.Add(rightIndexes.First());
+                        rightIndexes.Remove(rightIndexes.First());
+
+                        ChangeColorToBlack(leftIndexes.First());
+                        ChangeColorToBlack(indexResult.Last());
+                        Thread.Sleep(100);
+
                     }
                 }
-                //if only the left array still has elements, add all its items to the results array
-                else if (indexLeft < left.Length)
+                else if (left.Count > 0)
                 {
-                    result[indexResult] = left[indexLeft];
-                    indexLeft++;
-                    indexResult++;
+                    result.Add(left.First());
+                    left.Remove(left.First());
+
+                    indexResult.Add(leftIndexes.First());
+                    leftIndexes.Remove(leftIndexes.First());
                 }
-                //if only the right array still has elements, add all its items to the results array
-                else if (indexRight < right.Length)
+                else if (right.Count > 0)
                 {
-                    result[indexResult] = right[indexRight];
-                    indexRight++;
-                    indexResult++;
+                    result.Add(right.First());
+                    right.Remove(right.First());
+
+                    indexResult.Add(rightIndexes.First());
+                    rightIndexes.Remove(rightIndexes.First());
                 }
             }
+            
+            for (int i = 0; i < indexResult.Count; i++)
+            {
+                setSeriesElement(indexResult[i],result[i]);
+            }
+            Thread.Sleep(200);
             return result;
         }
 
 
-        //Quicksort
+        //Quicksort functions
         private void QuickSortBTN_Click(object sender, RoutedEventArgs e)
         {
             int[] ChartValueArray = new int[SizeOfChartArray];
@@ -243,12 +318,6 @@ namespace SortingAlgorythms
             {
                 Quick_Sort(ChartValueArray, 0, SizeOfChartArray - 1);
             }).Start();
-            //string str="";
-            //foreach (int x in ChartValueArray)
-            //{
-            //    str += "<" + x;
-            //}
-            //MessageBox.Show(str);
         }
         private void Quick_Sort(int[] arr, int left, int right)
         {
@@ -267,7 +336,6 @@ namespace SortingAlgorythms
             }
 
         }
-
         private int Partition(int[] arr, int left, int right)
         {
             ChangeColorToBlue(left);
@@ -319,7 +387,7 @@ namespace SortingAlgorythms
 
                     arr[left] = arr[right];
                     arr[right] = temp;
-                    
+
                     Thread.Sleep(200);
 
                     ChangeColorToBlack(left);
@@ -335,7 +403,7 @@ namespace SortingAlgorythms
         //Heapsort
 
 
-        //Bubble
+        //Bubblesort functions
         private void BubbleSortBTN_Click(object sender, RoutedEventArgs e)
         {
             new Thread(() =>
@@ -395,46 +463,6 @@ namespace SortingAlgorythms
             }).Start();
         }
 
-        private void ChangeColorToRed(int index)
-        {
-            Dispatcher.Invoke(new Action(() =>
-            {
-                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Red;
-            }));
-        }
-        private void ChangeColorToGreen(int index)
-        {
-            Dispatcher.Invoke(new Action(() =>
-            {
-                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.LightGreen;
-            }));
-        }
-        private void ChangeColorToBlack(int index)
-        {
-            Dispatcher.Invoke(new Action(() =>
-            {
-                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Black;
-            }));
-        }
-
-        private void ChangeColorToBlue(int index)
-        {
-            Dispatcher.Invoke(new Action(() =>
-            {
-                ((ColumnSeries)LiveChartValueSeries[index]).Fill = Brushes.Blue;
-            }));
-        }
-
-        private int getSeriesElement(int index)
-        {
-            int result = Convert.ToInt32(LiveChartValueSeries[index].Values[0]);
-            return result;
-        }
-        private void setSeriesElement(int index, int value)
-        {
-            LiveChartValueSeries[index].Values.Clear();
-            LiveChartValueSeries[index].Values.Add(value);
-        }
 
 
     }
