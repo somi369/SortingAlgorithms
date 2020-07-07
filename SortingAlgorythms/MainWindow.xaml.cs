@@ -207,7 +207,10 @@ namespace SortingAlgorythms
         private List<int> MergeSort(List<int> unsorted, List<int> indexList)
         {
             if (unsorted.Count <= 1)
-                return unsorted;
+            {                 
+                return unsorted;                
+            }
+                
 
             List<int> left = new List<int>();
             List<int> right = new List<int>();
@@ -401,8 +404,84 @@ namespace SortingAlgorythms
         }
 
         //Heapsort
+        private void HeapSortBTN_Click(object sender, RoutedEventArgs e)
+        {
+            int[] ChartValueArray = new int[SizeOfChartArray];
+            for (int i = 0; i < SizeOfChartArray; i++)
+            {
+                ChartValueArray[i] = getSeriesElement(i);
+            }
+            new Thread(() =>
+            {
+                HeapSort(ChartValueArray);
+
+                for (int i = 0; i < ChartValueArray.Length; i++)
+                {
+                    //setSeriesElement(i, ChartValueArray[i]);
+                }
+
+            }).Start();
+        }
+        private void HeapSort(int[] array)
+        {
+            var length = array.Length;
+            for (int i = length / 2 - 1; i >= 0; i--)
+            {
+                Heapify(array, length, i);
+            }
+            for (int i = length - 1; i >= 0; i--)
+            {
 
 
+                int temp = array[0];
+
+
+                //ChangeColorToBlack(indexResult.Last());
+                //ChangeColorToBlack(rightIndexes.First());
+                //Thread.Sleep(100);
+
+                setSeriesElement(0, array[i]);
+                setSeriesElement(i, temp);
+                Thread.Sleep(200);
+
+
+                array[0] = array[i];
+                array[i] = temp;
+
+
+
+                Heapify(array, i, 0);
+            }
+        }
+        private void Heapify(int[] array, int length, int i)
+        {
+            int largest = i;
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+            if (left < length && array[left] > array[largest])
+            {
+                largest = left;
+            }
+            if (right < length && array[right] > array[largest])
+            {
+                largest = right;
+            }
+            if (largest != i)
+            {
+                int swap = array[i];
+
+                setSeriesElement(i, array[largest]);
+                setSeriesElement(largest, swap);
+                Thread.Sleep(200);
+
+                array[i] = array[largest];
+                array[largest] = swap;
+
+
+
+                Heapify(array, length, largest);
+            }
+        }
         //Bubblesort functions
         private void BubbleSortBTN_Click(object sender, RoutedEventArgs e)
         {
@@ -463,7 +542,6 @@ namespace SortingAlgorythms
             }).Start();
         }
 
-
-
+        
     }
 }

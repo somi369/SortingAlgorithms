@@ -22,6 +22,7 @@
             <Button Content="Merge sort" x:Name="MergeSortBTN" Click="MergeSortBTN_Click" />
             <Button Content="Bubble sort" x:Name="BubbleSortBTN" Click="BubbleSortBTN_Click" ></Button>
             <Button Content="Quick sort" x:Name="QuickSortBTN" Click="QuickSortBTN_Click"></Button>
+            <Button Content="Heap sort" x:Name="HeapSortBTN" Click="HeapSortBTN_Click"></Button>
 
         </StackPanel>
         <StackPanel x:Name="StackPanel1" Grid.Column="1" Grid.Row="0">
