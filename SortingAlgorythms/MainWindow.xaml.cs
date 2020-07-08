@@ -222,11 +222,11 @@ namespace SortingAlgorythms
         private int Partition(int[] arr, int left, int right)
         {
             ChangeColor(left, Brushes.Blue);
-            Thread.Sleep(200);
+            Thread.Sleep(100);
 
             int pivot = arr[left];
 
-            Thread.Sleep(200);
+            Thread.Sleep(100);
             ChangeColor(left, Brushes.Black);
 
             while (true)
@@ -249,7 +249,7 @@ namespace SortingAlgorythms
                         ChangeColor(left, Brushes.Red);
                         ChangeColor(right, Brushes.Red);
 
-                        Thread.Sleep(200);
+                        Thread.Sleep(100);
 
                         return right;
                     }
@@ -257,7 +257,7 @@ namespace SortingAlgorythms
                     ChangeColor(left, Brushes.LightGreen);
                     ChangeColor(right, Brushes.LightGreen);
 
-                    Thread.Sleep(200);
+                    Thread.Sleep(100);
 
                     int temp = arr[left];
 
@@ -267,7 +267,7 @@ namespace SortingAlgorythms
                     arr[left] = arr[right];
                     arr[right] = temp;
 
-                    Thread.Sleep(200);
+                    Thread.Sleep(100);
 
                     ChangeColor(left, Brushes.Black);
                     ChangeColor(right, Brushes.Black);
@@ -400,7 +400,7 @@ namespace SortingAlgorythms
             {
                 setSeriesElement(indexResult[i], result[i]);
             }
-            Thread.Sleep(200);
+            Thread.Sleep(100);
             return result;
         }
         //Heap sort -> need color when comparing
@@ -429,7 +429,7 @@ namespace SortingAlgorythms
 
                 setSeriesElement(0, array[i]);
                 setSeriesElement(i, temp);
-                Thread.Sleep(200);
+                Thread.Sleep(100);
 
                 array[0] = array[i];
                 array[i] = temp;
@@ -456,7 +456,7 @@ namespace SortingAlgorythms
 
                 setSeriesElement(i, array[largest]);
                 setSeriesElement(largest, swap);
-                Thread.Sleep(200);
+                Thread.Sleep(100);
 
                 array[i] = array[largest];
                 array[largest] = swap;
