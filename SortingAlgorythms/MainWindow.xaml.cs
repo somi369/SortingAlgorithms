@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Threading;
 using System.Windows.Threading;
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace SortingAlgorythms
 {
@@ -19,14 +20,17 @@ namespace SortingAlgorythms
         public MainWindow()
         {
             InitializeComponent();
+
+            SizeOfChartArray = 40;
+
             InitializeLiveChart();
-            SizeOfChartArray = 20;
+
             CreateRandomUniqueValues();
         }
         private void InitializeLiveChart()
         {
             LiveChartValueSeries = new SeriesCollection();
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < SizeOfChartArray; i++)
             {
                 LiveChartValueSeries.Add(new ColumnSeries { Values = new ChartValues<int> { i + 1 }, Fill = Brushes.Black });
             }
@@ -41,6 +45,15 @@ namespace SortingAlgorythms
                 ((ColumnSeries)LiveChartValueSeries[index]).Fill = color;
             }));
         }
+        
+        private void setEnableForAllButtons(bool state)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                StackPanel0.IsEnabled = state;
+            }));
+        }
+
         private int getSeriesElement(int index)
         {
             int result = Convert.ToInt32(LiveChartValueSeries[index].Values[0]);
@@ -55,13 +68,7 @@ namespace SortingAlgorythms
         {
             new Thread(() =>
             {
-                //Button disable
-                Dispatcher.BeginInvoke(new Action(() => { UniqueValuesBTN.IsEnabled = false; }));
-
                 CreateRandomUniqueValues();
-
-                //Button enable
-                Dispatcher.BeginInvoke(new Action(() => { UniqueValuesBTN.IsEnabled = true; }));
             }).Start();
         }
         private void CreateRandomUniqueValues()
@@ -71,14 +78,14 @@ namespace SortingAlgorythms
             {
 
                 // Clear Chart values
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < SizeOfChartArray; i++)
                 {
                     LiveChartValueSeries[i].Values.Clear();
                 }
 
                 //Create an array
 
-                var Numbers = Enumerable.Range(1, 20).ToArray();
+                var Numbers = Enumerable.Range(1, SizeOfChartArray).ToArray();
                 var Rnd = new Random();
 
                 // Shuffle the array
@@ -104,7 +111,9 @@ namespace SortingAlgorythms
         {
             new Thread(() =>
             {
+                setEnableForAllButtons(false);
                 SelectionSort();
+                setEnableForAllButtons(true);
             }).Start();
         }
         private void SelectionSort()
@@ -115,31 +124,23 @@ namespace SortingAlgorythms
                 {
                     int a = Convert.ToInt32(LiveChartValueSeries[i].Values[0]);
                     int b = Convert.ToInt32(LiveChartValueSeries[j].Values[0]);
-
-                    Thread.Sleep(100);
-
-
                     if (a > b)
                     {
-
                         LiveChartValueSeries[i].Values.Clear();
                         LiveChartValueSeries[j].Values.Clear();
 
                         LiveChartValueSeries[i].Values.Add(b);
                         LiveChartValueSeries[j].Values.Add(a);
 
-
                         ChangeColor(i, Brushes.LightGreen);
                         ChangeColor(j, Brushes.LightGreen);
-
                         Thread.Sleep(100);
                     }
                     else
                     {
-
                         ChangeColor(i, Brushes.Red);
                         ChangeColor(j, Brushes.Red);
-
+                        Thread.Sleep(100);
                     }
                     ChangeColor(i, Brushes.Black);
                     ChangeColor(j, Brushes.Black);
@@ -152,7 +153,9 @@ namespace SortingAlgorythms
         {
             new Thread(() =>
             {
+                setEnableForAllButtons(false);
                 BubbleSort();
+                setEnableForAllButtons(true);
             }).Start();
         }
         private void BubbleSort()
@@ -199,7 +202,9 @@ namespace SortingAlgorythms
             }
             new Thread(() =>
             {
+                setEnableForAllButtons(false);
                 Quick_Sort(ChartValueArray, 0, SizeOfChartArray - 1);
+                setEnableForAllButtons(true);
             }).Start();
         }
         private void Quick_Sort(int[] arr, int left, int right)
@@ -225,9 +230,9 @@ namespace SortingAlgorythms
             Thread.Sleep(100);
 
             int pivot = arr[left];
-
-            Thread.Sleep(100);
+            
             ChangeColor(left, Brushes.Black);
+            Thread.Sleep(100);
 
             while (true)
             {
@@ -246,17 +251,11 @@ namespace SortingAlgorythms
                 {
                     if (arr[left] == arr[right])
                     {
-                        ChangeColor(left, Brushes.Red);
-                        ChangeColor(right, Brushes.Red);
-
-                        Thread.Sleep(100);
-
                         return right;
                     }
 
                     ChangeColor(left, Brushes.LightGreen);
                     ChangeColor(right, Brushes.LightGreen);
-
                     Thread.Sleep(100);
 
                     int temp = arr[left];
@@ -266,14 +265,21 @@ namespace SortingAlgorythms
 
                     arr[left] = arr[right];
                     arr[right] = temp;
-
+                    
+                    ChangeColor(left, Brushes.Black);
+                    ChangeColor(right, Brushes.Black);
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    ChangeColor(left, Brushes.Red);
+                    ChangeColor(right, Brushes.Red);
                     Thread.Sleep(100);
 
                     ChangeColor(left, Brushes.Black);
                     ChangeColor(right, Brushes.Black);
-                }
-                else
-                {
+                    Thread.Sleep(100);
+
                     return right;
                 }
             }
@@ -294,12 +300,14 @@ namespace SortingAlgorythms
             }
             new Thread(() =>
             {
+                setEnableForAllButtons(false);
                 chartValueList = MergeSort(chartValueList, indexList);
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
                 for (int i = 0; i < chartValueList.Count; i++)
                 {
                     setSeriesElement(i, chartValueList[i]);
                 }
+                setEnableForAllButtons(true);
 
             }).Start();
         }
@@ -307,6 +315,7 @@ namespace SortingAlgorythms
         {
             if (unsorted.Count <= 1)
             {
+                
                 return unsorted;
             }
 
@@ -345,8 +354,8 @@ namespace SortingAlgorythms
                     if (left.First() <= right.First())
                     {
 
-                        ChangeColor(leftIndexes.First(), Brushes.LightGreen);
-                        ChangeColor(rightIndexes.First(), Brushes.LightGreen);
+                        ChangeColor(leftIndexes.First(), Brushes.Red);
+                        ChangeColor(rightIndexes.First(), Brushes.Red);
                         Thread.Sleep(100);
 
                         result.Add(left.First());
@@ -362,8 +371,8 @@ namespace SortingAlgorythms
                     }
                     else
                     {
-                        ChangeColor(leftIndexes.First(), Brushes.Red);
-                        ChangeColor(rightIndexes.First(), Brushes.Red);
+                        ChangeColor(leftIndexes.First(), Brushes.LightGreen);
+                        ChangeColor(rightIndexes.First(), Brushes.LightGreen);
                         Thread.Sleep(100);
 
                         result.Add(right.First());
@@ -413,7 +422,9 @@ namespace SortingAlgorythms
             }
             new Thread(() =>
             {
+                setEnableForAllButtons(false);
                 HeapSort(ChartValueArray);
+                setEnableForAllButtons(true);
             }).Start();
         }
         private void HeapSort(int[] array)

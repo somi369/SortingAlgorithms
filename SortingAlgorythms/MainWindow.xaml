@@ -32,7 +32,7 @@
                     <lvc:Axis Title="X"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Y" LabelFormatter="{Binding Formatter}" MinValue="0" MaxValue="20"></lvc:Axis>
+                    <lvc:Axis Title="Y" LabelFormatter="{Binding Formatter}" MinValue="0"></lvc:Axis>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
             
