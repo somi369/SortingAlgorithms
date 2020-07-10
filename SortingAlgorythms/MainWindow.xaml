@@ -17,7 +17,8 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel x:Name="StackPanel0" Grid.Column="0" >
-            <Button Content="Unique values" x:Name="UniqueValuesBTN" Click="UniqueValuesBTN_Click"/>
+            <TextBox Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" IsEnabled="False" />
+            <Slider  Minimum="10" Maximum="100" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Name="slValue"  Thumb.DragCompleted="slValue_DragCompleted" />
             <Button Content="Selection sort" x:Name="SelectionSortBTN" Click="SelectionSortBTN_Click" />
             <Button Content="Bubble sort" x:Name="BubbleSortBTN" Click="BubbleSortBTN_Click" ></Button>
             <Button Content="Quick sort" x:Name="QuickSortBTN" Click="QuickSortBTN_Click"></Button>

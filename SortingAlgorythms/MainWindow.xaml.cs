@@ -21,7 +21,7 @@ namespace SortingAlgorythms
         {
             InitializeComponent();
 
-            SizeOfChartArray = 40;
+            SizeOfChartArray = 20;
 
             InitializeLiveChart();
 
@@ -38,14 +38,13 @@ namespace SortingAlgorythms
             Formatter = value => value.ToString("N");
             DataContext = this;
         }
-        private void ChangeColor(int index, System.Windows.Media.Brush color)
+        private void ChangeColor(int index, Brush color)
         {
             Dispatcher.Invoke(new Action(() =>
             {
                 ((ColumnSeries)LiveChartValueSeries[index]).Fill = color;
             }));
         }
-        
         private void setEnableForAllButtons(bool state)
         {
             Dispatcher.Invoke(new Action(() =>
@@ -53,7 +52,6 @@ namespace SortingAlgorythms
                 StackPanel0.IsEnabled = state;
             }));
         }
-
         private int getSeriesElement(int index)
         {
             int result = Convert.ToInt32(LiveChartValueSeries[index].Values[0]);
@@ -64,13 +62,6 @@ namespace SortingAlgorythms
             LiveChartValueSeries[index].Values.Clear();
             LiveChartValueSeries[index].Values.Add(value);
         }
-        private void UniqueValuesBTN_Click(object sender, RoutedEventArgs e)
-        {
-            new Thread(() =>
-            {
-                CreateRandomUniqueValues();
-            }).Start();
-        }
         private void CreateRandomUniqueValues()
         {
 
@@ -78,10 +69,14 @@ namespace SortingAlgorythms
             {
 
                 // Clear Chart values
-                for (int i = 0; i < SizeOfChartArray; i++)
+                Dispatcher.Invoke(new Action(() =>
                 {
-                    LiveChartValueSeries[i].Values.Clear();
-                }
+                    LiveChartValueSeries.Clear();
+                }));
+                //for (int i = 0; i < LiveChartValueSeries.Count; i++)
+                //{
+                //    LiveChartValueSeries[i].Values.Clear();
+                //}
 
                 //Create an array
 
@@ -98,14 +93,23 @@ namespace SortingAlgorythms
                 }
 
                 // Change Chart values
-                for (int i = 0; i < Numbers.Length; ++i)
+                for (int i = 0; i < SizeOfChartArray; ++i)
                 {
-                    LiveChartValueSeries[i].Values.Add(Numbers[i]);
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        LiveChartValueSeries.Add(new ColumnSeries { Values = new ChartValues<int> { Numbers[i] }, Fill = Brushes.Black });
+                    }));
                 }
 
 
             }).Start();
         }
+        private void slValue_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            SizeOfChartArray = (int)slValue.Value;
+            CreateRandomUniqueValues();
+        }
+
         //Selection sort
         private void SelectionSortBTN_Click(object sender, RoutedEventArgs e)
         {
@@ -316,6 +320,7 @@ namespace SortingAlgorythms
             if (unsorted.Count <= 1)
             {
                 
+
                 return unsorted;
             }
 
@@ -455,15 +460,42 @@ namespace SortingAlgorythms
             int right = 2 * i + 2;
             if (left < length && array[left] > array[largest])
             {
+                ChangeColor(left, Brushes.LightGreen);
+                ChangeColor(largest, Brushes.LightGreen);
+                Thread.Sleep(100);
+
+                ChangeColor(left, Brushes.Black);
+                ChangeColor(largest, Brushes.Black);
+                Thread.Sleep(100);
+
                 largest = left;
             }
             if (right < length && array[right] > array[largest])
             {
-                largest = right;
+                ChangeColor(left, Brushes.Red);
+                ChangeColor(largest, Brushes.Red);
+                Thread.Sleep(100);
+
+                ChangeColor(left, Brushes.Black);
+                ChangeColor(largest, Brushes.Black);
+                Thread.Sleep(100);
+
+                largest = right;                
             }
             if (largest != i)
             {
                 int swap = array[i];
+
+
+                ChangeColor(left, Brushes.LightGreen);
+                ChangeColor(largest, Brushes.LightGreen);
+                Thread.Sleep(100);
+
+
+                ChangeColor(left, Brushes.Black);
+                ChangeColor(largest, Brushes.Black);
+                Thread.Sleep(100);
+
 
                 setSeriesElement(i, array[largest]);
                 setSeriesElement(largest, swap);
@@ -474,5 +506,7 @@ namespace SortingAlgorythms
                 Heapify(array, length, largest);
             }
         }
+
+        
     }
 }
