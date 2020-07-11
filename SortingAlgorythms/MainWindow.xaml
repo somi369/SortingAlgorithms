@@ -6,40 +6,74 @@
         xmlns:local="clr-namespace:SortingAlgorythms"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="Sorting Algorythms" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="4*"></ColumnDefinition>
+        Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" >
 
-        </Grid.ColumnDefinitions>
+    <Grid Background="#FF222222" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="StackPanel0" Grid.Column="0" >
-            <TextBox Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" IsEnabled="False" />
-            <Slider  Minimum="10" Maximum="100" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Name="slValue"  Thumb.DragCompleted="slValue_DragCompleted" />
-            <Button Content="Selection sort" x:Name="SelectionSortBTN" Click="SelectionSortBTN_Click" />
-            <Button Content="Bubble sort" x:Name="BubbleSortBTN" Click="BubbleSortBTN_Click" ></Button>
-            <Button Content="Quick sort" x:Name="QuickSortBTN" Click="QuickSortBTN_Click"></Button>
-            <Button Content="Merge sort" x:Name="MergeSortBTN" Click="MergeSortBTN_Click" />
-            <Button Content="Heap sort" x:Name="HeapSortBTN" Click="HeapSortBTN_Click"></Button>
 
-        </StackPanel>
-        <StackPanel x:Name="StackPanel1" Grid.Column="1" Grid.Row="0">
+        <Grid  Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Foreground="White" FontSize="25" Content="Sorting Algorithms" FontFamily="Century Gothic" Grid.Column="0"></Label>
+            <StackPanel Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Foreground="White" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Array size:" FontFamily="Century Gothic"></Label>
+                    <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" FontFamily="Century Gothic"  />
+                </Grid>
+                <Slider  Minimum="10" Maximum="100" Width="150" VerticalAlignment="Center" TickPlacement="None"  TickFrequency="1" IsSnapToTickEnabled="True" Name="slValue"  Thumb.DragCompleted="slValue_DragCompleted"/>
 
-            <lvc:CartesianChart x:Name="firstChart" Series="{Binding LiveChartValueSeries}"  Margin="10,10,10.2,10" Height="404" Hoverable="False" DataTooltip="{x:Null}" DisableAnimations="True">
-                <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="X"></lvc:Axis>
-                </lvc:CartesianChart.AxisX>
-                <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Y" LabelFormatter="{Binding Formatter}" MinValue="0"></lvc:Axis>
-                </lvc:CartesianChart.AxisY>
-            </lvc:CartesianChart>
-            
-        </StackPanel>
+            </StackPanel>
+            <Button Content="X" x:Name="XBTN" Width="70" Height="25" HorizontalContentAlignment="Right" BorderThickness="0" Click="XBTN_Click" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18" Grid.Column="2" />
+
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel x:Name="StackPanel0" Grid.Column="0">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Background" Value="#FF222222"/>
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <Button Content="Selection sort" x:Name="SelectionSortBTN" Click="SelectionSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18" />
+                <Button Content="Bubble sort" x:Name="BubbleSortBTN" Click="BubbleSortBTN_Click" BorderThickness="0" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18"></Button>
+                <Button Content="Quick sort" x:Name="QuickSortBTN" Click="QuickSortBTN_Click" BorderThickness="0" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18"></Button>
+                <Button Content="Merge sort" x:Name="MergeSortBTN" Click="MergeSortBTN_Click" BorderThickness="0" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18"/>
+                <Button Content="Heap sort" x:Name="HeapSortBTN" Click="HeapSortBTN_Click" BorderThickness="0" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18"></Button>
+
+            </StackPanel>
+            <StackPanel x:Name="StackPanel1" Grid.Column="1"  >
+
+                <lvc:CartesianChart x:Name="firstChart" Series="{Binding LiveChartValueSeries}"  Margin="10,10,10.2,10" Height="404" Hoverable="False" DataTooltip="{x:Null}" DisableAnimations="True" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Y" LabelFormatter="{Binding Formatter}" MinValue="0"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+
+            </StackPanel>
 
 
-
+        </Grid>
     </Grid>
 </Window>

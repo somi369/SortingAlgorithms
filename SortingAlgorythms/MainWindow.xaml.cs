@@ -16,6 +16,7 @@ namespace SortingAlgorythms
         public SeriesCollection LiveChartValueSeries { get; set; }
         public string[] Labels { get; set; }
         public Func<int, string> Formatter { get; set; }
+
         int SizeOfChartArray;
         public MainWindow()
         {
@@ -41,9 +42,9 @@ namespace SortingAlgorythms
         private void ChangeColor(int index, Brush color)
         {
             Dispatcher.Invoke(new Action(() =>
-            {
-                ((ColumnSeries)LiveChartValueSeries[index]).Fill = color;
-            }));
+                {
+                    ((ColumnSeries)LiveChartValueSeries[index]).Fill = color;
+                }));
         }
         private void setEnableForAllButtons(bool state)
         {
@@ -73,10 +74,7 @@ namespace SortingAlgorythms
                 {
                     LiveChartValueSeries.Clear();
                 }));
-                //for (int i = 0; i < LiveChartValueSeries.Count; i++)
-                //{
-                //    LiveChartValueSeries[i].Values.Clear();
-                //}
+
 
                 //Create an array
 
@@ -109,7 +107,14 @@ namespace SortingAlgorythms
             SizeOfChartArray = (int)slValue.Value;
             CreateRandomUniqueValues();
         }
-
+        private void Grid_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+        private void XBTN_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(1);
+        }
         //Selection sort
         private void SelectionSortBTN_Click(object sender, RoutedEventArgs e)
         {
@@ -156,11 +161,13 @@ namespace SortingAlgorythms
         private void BubbleSortBTN_Click(object sender, RoutedEventArgs e)
         {
             new Thread(() =>
-            {
-                setEnableForAllButtons(false);
-                BubbleSort();
-                setEnableForAllButtons(true);
-            }).Start();
+                {
+                    setEnableForAllButtons(false);
+                    BubbleSort();
+                    setEnableForAllButtons(true);
+                }).Start();
+
+
         }
         private void BubbleSort()
         {
@@ -234,7 +241,7 @@ namespace SortingAlgorythms
             Thread.Sleep(100);
 
             int pivot = arr[left];
-            
+
             ChangeColor(left, Brushes.Black);
             Thread.Sleep(100);
 
@@ -269,7 +276,7 @@ namespace SortingAlgorythms
 
                     arr[left] = arr[right];
                     arr[right] = temp;
-                    
+
                     ChangeColor(left, Brushes.Black);
                     ChangeColor(right, Brushes.Black);
                     Thread.Sleep(100);
@@ -319,7 +326,7 @@ namespace SortingAlgorythms
         {
             if (unsorted.Count <= 1)
             {
-                
+
 
                 return unsorted;
             }
@@ -417,7 +424,7 @@ namespace SortingAlgorythms
             Thread.Sleep(100);
             return result;
         }
-        //Heap sort -> need color when comparing
+        //Heap sort
         private void HeapSortBTN_Click(object sender, RoutedEventArgs e)
         {
             int[] ChartValueArray = new int[SizeOfChartArray];
@@ -480,7 +487,7 @@ namespace SortingAlgorythms
                 ChangeColor(largest, Brushes.Black);
                 Thread.Sleep(100);
 
-                largest = right;                
+                largest = right;
             }
             if (largest != i)
             {
@@ -507,6 +514,5 @@ namespace SortingAlgorythms
             }
         }
 
-        
     }
 }
