@@ -8,26 +8,47 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace SortingAlgorythms
 {
     public partial class MainWindow : Window
     {
+        //LiveCharts
+        int SizeOfChartArray;
         public SeriesCollection LiveChartValueSeries { get; set; }
         public string[] Labels { get; set; }
         public Func<int, string> Formatter { get; set; }
-
-        int SizeOfChartArray;
+        //Timer
+        private DispatcherTimer dispatcherTimer;           
+        DateTime startDate;
+        //Contructor
         public MainWindow()
         {
             InitializeComponent();
-
-            SizeOfChartArray = 20;
-
+            //LiveCharts
+            SizeOfChartArray = 10;
             InitializeLiveChart();
-
             CreateRandomUniqueValues();
+            //Timer            
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(1);
+            dispatcherTimer.Tick += dispatcherTimerTicker;
+            startDate = new DateTime();
         }
+
+        private void dispatcherTimerTicker(object sender, EventArgs e)
+        {
+            DateTime dateTimeCurrent = DateTime.Now;
+            TimeSpan dateDiff = dateTimeCurrent - startDate;
+            TimerLBL.Content = 
+                dateDiff.Hours.ToString()+':'+
+                dateDiff.Minutes.ToString()+':'+
+                dateDiff.Seconds.ToString()+':'+
+                dateDiff.Milliseconds.ToString();
+        }
+
         private void InitializeLiveChart()
         {
             LiveChartValueSeries = new SeriesCollection();
@@ -120,9 +141,12 @@ namespace SortingAlgorythms
         {
             new Thread(() =>
             {
+                startDate = DateTime.Now;
+                dispatcherTimer.Start();
                 setEnableForAllButtons(false);
                 SelectionSort();
                 setEnableForAllButtons(true);
+                dispatcherTimer.Stop();
             }).Start();
         }
         private void SelectionSort()
@@ -162,9 +186,12 @@ namespace SortingAlgorythms
         {
             new Thread(() =>
                 {
+                    startDate = DateTime.Now;
+                    dispatcherTimer.Start();
                     setEnableForAllButtons(false);
                     BubbleSort();
                     setEnableForAllButtons(true);
+                    dispatcherTimer.Stop();
                 }).Start();
 
 
@@ -213,9 +240,12 @@ namespace SortingAlgorythms
             }
             new Thread(() =>
             {
+                startDate = DateTime.Now;
+                dispatcherTimer.Start();
                 setEnableForAllButtons(false);
                 Quick_Sort(ChartValueArray, 0, SizeOfChartArray - 1);
                 setEnableForAllButtons(true);
+                dispatcherTimer.Stop();
             }).Start();
         }
         private void Quick_Sort(int[] arr, int left, int right)
@@ -311,6 +341,8 @@ namespace SortingAlgorythms
             }
             new Thread(() =>
             {
+                startDate = DateTime.Now;
+                dispatcherTimer.Start();
                 setEnableForAllButtons(false);
                 chartValueList = MergeSort(chartValueList, indexList);
                 Thread.Sleep(100);
@@ -319,6 +351,7 @@ namespace SortingAlgorythms
                     setSeriesElement(i, chartValueList[i]);
                 }
                 setEnableForAllButtons(true);
+                dispatcherTimer.Stop();
 
             }).Start();
         }
@@ -434,9 +467,12 @@ namespace SortingAlgorythms
             }
             new Thread(() =>
             {
+                startDate = DateTime.Now;
+                dispatcherTimer.Start();
                 setEnableForAllButtons(false);
                 HeapSort(ChartValueArray);
                 setEnableForAllButtons(true);
+                dispatcherTimer.Stop();
             }).Start();
         }
         private void HeapSort(int[] array)

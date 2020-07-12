@@ -8,12 +8,50 @@
         mc:Ignorable="d"
         Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" >
 
+    <Window.Resources>
+        <Style x:Key="MyButton2">
+            <Setter Property="Control.OverridesDefaultStyle" Value="True" />
+            <Setter Property="Control.Background" Value="#FF222222" />
+            <Setter Property="Control.Foreground" Value="White" />
+            <Setter Property="Control.Margin" Value="0,10,0,0" />
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="Control.IsEnabled" Value="False">
+                    <Setter Property="Control.OverridesDefaultStyle" Value="True" />
+                    <Setter Property="Control.Background" Value="#FF222222" />
+                    <Setter Property="Control.Foreground" Value="White" />
+                </Trigger>
+                <Trigger Property="Control.IsEnabled" Value="True">
+                    <Setter Property="Control.OverridesDefaultStyle" Value="True" />
+                    <Setter Property="Control.Background" Value="#FF222222" />
+                    <Setter Property="Control.Foreground" Value="White" />
+                </Trigger>
+                <Trigger Property="Control.IsMouseOver" Value="true">
+                    <Setter Property="Control.Background" Value="DarkGray" />
+                    <Setter Property="Control.Cursor" Value="Hand"/>
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
+    </Window.Resources>
     <Grid Background="#FF222222" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
-
         <Grid  Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -41,27 +79,14 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="4*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-
             <StackPanel x:Name="StackPanel0" Grid.Column="0">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Background" Value="#FF222222"/>
-                        <Setter Property="IsEnabled" Value="True"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="Background" Value="#FF222222"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Resources>
-                <Button Content="Selection sort" x:Name="SelectionSortBTN" Click="SelectionSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18" />
-                <Button Content="Bubble sort" x:Name="BubbleSortBTN" Click="BubbleSortBTN_Click" BorderThickness="0" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18"></Button>
-                <Button Content="Quick sort" x:Name="QuickSortBTN" Click="QuickSortBTN_Click" BorderThickness="0" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18"></Button>
-                <Button Content="Merge sort" x:Name="MergeSortBTN" Click="MergeSortBTN_Click" BorderThickness="0" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18"/>
-                <Button Content="Heap sort" x:Name="HeapSortBTN" Click="HeapSortBTN_Click" BorderThickness="0" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18"></Button>
-
+                <Button Content="Selection sort" Style="{StaticResource MyButton2}" x:Name="SelectionSortBTN" Click="SelectionSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18" />
+                <Button Content="Bubble sort" Style="{StaticResource MyButton2}" x:Name="BubbleSortBTN" Click="BubbleSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18"></Button>
+                <Button Content="Quick sort" Style="{StaticResource MyButton2}"  x:Name="QuickSortBTN" Click="QuickSortBTN_Click" BorderThickness="0"  FontFamily="Century Gothic" FontSize="18"></Button>
+                <Button Content="Merge sort" Style="{StaticResource MyButton2}" x:Name="MergeSortBTN" Click="MergeSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18"></Button>
+                <Button Content="Heap sort" Style="{StaticResource MyButton2}" x:Name="HeapSortBTN" Click="HeapSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18"></Button>
+                <Label Content="Timer:" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 50 0 0"  />
+                <Label x:Name="TimerLBL" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" Content="--:--:--:--" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </StackPanel>
             <StackPanel x:Name="StackPanel1" Grid.Column="1"  >
 
