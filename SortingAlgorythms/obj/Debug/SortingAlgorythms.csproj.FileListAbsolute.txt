@@ -46,14 +46,8 @@ C:\Users\Munka\source\repos\SortingAlgorythms\SortingAlgorythms\bin\Debug\LiveCh
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\SortingAlgorythms.exe.config
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\SortingAlgorythms.exe
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\SortingAlgorythms.pdb
-C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.dll
-C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.WinForms.dll
-C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.Wpf.dll
-C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.pdb
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.xml
-C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.WinForms.pdb
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.WinForms.xml
-C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.Wpf.pdb
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\bin\Debug\LiveCharts.Wpf.xml
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\obj\Debug\SortingAlgorythms.csprojAssemblyReference.cache
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\obj\Debug\MainWindow.g.cs
@@ -68,3 +62,4 @@ C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\obj\Debug\Sortin
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\obj\Debug\SortingAlgorythms.csproj.CopyComplete
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\obj\Debug\SortingAlgorythms.exe
 C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\obj\Debug\SortingAlgorythms.pdb
+C:\Users\Munka\source\repos\SortingAlgorithms\SortingAlgorythms\obj\Debug\SortingAlgorythms.csproj.Fody.CopyLocal.cache
