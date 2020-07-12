@@ -85,8 +85,29 @@
                 <Button Content="Quick sort" Style="{StaticResource MyButton2}"  x:Name="QuickSortBTN" Click="QuickSortBTN_Click" BorderThickness="0"  FontFamily="Century Gothic" FontSize="18"></Button>
                 <Button Content="Merge sort" Style="{StaticResource MyButton2}" x:Name="MergeSortBTN" Click="MergeSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18"></Button>
                 <Button Content="Heap sort" Style="{StaticResource MyButton2}" x:Name="HeapSortBTN" Click="HeapSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18"></Button>
-                <Label Content="Timer:" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 50 0 0"  />
+                <Label Content="Timer:" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 30 0 0"  />
                 <Label x:Name="TimerLBL" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" Content="--:--:--:--" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Label x:Name="InfoLBL" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 30 0 0">-</Label>
+                <StackPanel  >
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="6*"></ColumnDefinition>
+                            <ColumnDefinition Width="3.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}">Best case:</Label>
+                        <Label x:Name="BestCaseLBL" Grid.Row="0" Grid.Column="1" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}">-</Label>
+                        <Label Grid.Row="1" Grid.Column="0" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}">Avg. case:</Label>
+                        <Label x:Name="AvgCaseLBL" Grid.Row="1" Grid.Column="1" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}">-</Label>
+                        <Label Grid.Row="2" Grid.Column="0" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}">Worst case:</Label>
+                        <Label x:Name="WorstCaseLBL" Grid.Row="2" Grid.Column="1" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}">-</Label>
+                    </Grid>
+                </StackPanel>
+
             </StackPanel>
             <StackPanel x:Name="StackPanel1" Grid.Column="1"  >
 
