@@ -13,14 +13,14 @@ namespace SortingAlgorythms
     public partial class MainWindow : Window
     {
         //LiveCharts
-        int sizeOfChartArray;
-        int[] arrayCopy;
-        public SeriesCollection LiveChartValueSeries { get; set; }
+        public int sizeOfChartArray;
+        public int[] arrayCopy;
+        public SeriesCollection liveChartValueSeries { get; set; }
         public string[] labels { get; set; }
         public Func<int, string> formatter { get; set; }
         //Timer
-        private DispatcherTimer dispatcherTimer;
-        DateTime startDate;
+        public DispatcherTimer dispatcherTimer;
+        public DateTime startDate;
         //Contructor
         public MainWindow()
         {
@@ -50,10 +50,10 @@ namespace SortingAlgorythms
         private void InitializeLiveChart()
         {
 
-            LiveChartValueSeries = new SeriesCollection();
+            liveChartValueSeries = new SeriesCollection();
             for (int i = 0; i < sizeOfChartArray; i++)
             {
-                LiveChartValueSeries.Add(new ColumnSeries { Values = new ChartValues<int> { i + 1 }, Fill = Brushes.Black });
+                liveChartValueSeries.Add(new ColumnSeries { Values = new ChartValues<int> { i + 1 }, Fill = Brushes.Black });
             }
             labels = new[] { "Label1", "Label2" };
             formatter = value => value.ToString("N");
@@ -63,19 +63,18 @@ namespace SortingAlgorythms
         {
             Dispatcher.Invoke(new Action(() =>
                 {
-                    ((ColumnSeries)LiveChartValueSeries[index]).Fill = color;
+                    ((ColumnSeries)liveChartValueSeries[index]).Fill = color;
                 }));
         }
-        private void setEnableForAllButtons(bool state)
+        private void SetEnableForAllButtons(bool state)
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                StackPanel0.IsEnabled = state;
-                slValue.IsEnabled = state;
+                MenuSP.IsEnabled = state;
+                ArraySizeSL.IsEnabled = state;
             }));
         }
-
-        private void setRunTimeLabels(int idx)
+        private void SetRunTimeLabels(int idx)
         {
             Dispatcher.Invoke(new Action(() =>
             {
@@ -120,29 +119,28 @@ namespace SortingAlgorythms
                 }
             }));
         }
-
-        private int getSeriesElement(int index)
+        private int GetSeriesElement(int index)
         {
-            int result = Convert.ToInt32(LiveChartValueSeries[index].Values[0]);
+            int result = Convert.ToInt32(liveChartValueSeries[index].Values[0]);
             return result;
         }
-        private void setSeriesElement(int index, int value)
+        private void SetSeriesElement(int index, int value)
         {
-            LiveChartValueSeries[index].Values.Clear();
-            LiveChartValueSeries[index].Values.Add(value);
+            liveChartValueSeries[index].Values.Clear();
+            liveChartValueSeries[index].Values.Add(value);
         }
-        private void resetToUnordered()
+        private void ResetToUnordered()
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                LiveChartValueSeries.Clear();
+                liveChartValueSeries.Clear();
             }));
 
             for (int i = 0; i < sizeOfChartArray; ++i)
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    LiveChartValueSeries.Add(new ColumnSeries { Values = new ChartValues<int> { arrayCopy[i] }, Fill = Brushes.Black });
+                    liveChartValueSeries.Add(new ColumnSeries { Values = new ChartValues<int> { arrayCopy[i] }, Fill = Brushes.Black });
                 }));
             }
         }
@@ -155,7 +153,7 @@ namespace SortingAlgorythms
                 // Clear Chart values
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    LiveChartValueSeries.Clear();
+                    liveChartValueSeries.Clear();
                 }));
                 arrayCopy = new int[sizeOfChartArray];
 
@@ -179,7 +177,7 @@ namespace SortingAlgorythms
                 {
                     Dispatcher.Invoke(new Action(() =>
                     {
-                        LiveChartValueSeries.Add(new ColumnSeries { Values = new ChartValues<int> { Numbers[i] }, Fill = Brushes.Black });
+                        liveChartValueSeries.Add(new ColumnSeries { Values = new ChartValues<int> { Numbers[i] }, Fill = Brushes.Black });
                     }));
                 }
 
@@ -187,11 +185,12 @@ namespace SortingAlgorythms
 
             }).Start();
         }
-        private void slValue_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        private void ArraySizeSL_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
-            sizeOfChartArray = (int)slValue.Value;
+            sizeOfChartArray = (int)ArraySizeSL.Value;
             CreateRandomUniqueValues();
         }
+
         private void Grid_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -203,33 +202,33 @@ namespace SortingAlgorythms
         //Selection sort
         private void SelectionSortBTN_Click(object sender, RoutedEventArgs e)
         {
-            setRunTimeLabels(0);
-            resetToUnordered();
+            SetRunTimeLabels(0);
+            ResetToUnordered();
             new Thread(() =>
             {
                 startDate = DateTime.Now;
                 dispatcherTimer.Start();
-                setEnableForAllButtons(false);
+                SetEnableForAllButtons(false);
                 SelectionSort();
-                setEnableForAllButtons(true);
+                SetEnableForAllButtons(true);
                 dispatcherTimer.Stop();
             }).Start();
         }
         private void SelectionSort()
         {
-            for (int i = 0; i < LiveChartValueSeries.Count - 1; i++)
+            for (int i = 0; i < liveChartValueSeries.Count - 1; i++)
             {
-                for (int j = i + 1; j < LiveChartValueSeries.Count; j++)
+                for (int j = i + 1; j < liveChartValueSeries.Count; j++)
                 {
-                    int a = Convert.ToInt32(LiveChartValueSeries[i].Values[0]);
-                    int b = Convert.ToInt32(LiveChartValueSeries[j].Values[0]);
+                    int a = Convert.ToInt32(liveChartValueSeries[i].Values[0]);
+                    int b = Convert.ToInt32(liveChartValueSeries[j].Values[0]);
                     if (a > b)
                     {
-                        LiveChartValueSeries[i].Values.Clear();
-                        LiveChartValueSeries[j].Values.Clear();
+                        liveChartValueSeries[i].Values.Clear();
+                        liveChartValueSeries[j].Values.Clear();
 
-                        LiveChartValueSeries[i].Values.Add(b);
-                        LiveChartValueSeries[j].Values.Add(a);
+                        liveChartValueSeries[i].Values.Add(b);
+                        liveChartValueSeries[j].Values.Add(a);
 
                         ChangeColor(i, Brushes.LightGreen);
                         ChangeColor(j, Brushes.LightGreen);
@@ -250,15 +249,15 @@ namespace SortingAlgorythms
         //Bubble sort
         private void BubbleSortBTN_Click(object sender, RoutedEventArgs e)
         {
-            setRunTimeLabels(1);
-            resetToUnordered();
+            SetRunTimeLabels(1);
+            ResetToUnordered();
             new Thread(() =>
                 {
                     startDate = DateTime.Now;
                     dispatcherTimer.Start();
-                    setEnableForAllButtons(false);
+                    SetEnableForAllButtons(false);
                     BubbleSort();
-                    setEnableForAllButtons(true);
+                    SetEnableForAllButtons(true);
                     dispatcherTimer.Stop();
                 }).Start();
         }
@@ -268,17 +267,17 @@ namespace SortingAlgorythms
             {
                 for (int j = 0; j < sizeOfChartArray - i - 1; j++)
                 {
-                    int a = Convert.ToInt32(LiveChartValueSeries[j].Values[0]);
-                    int b = Convert.ToInt32(LiveChartValueSeries[j + 1].Values[0]);
+                    int a = Convert.ToInt32(liveChartValueSeries[j].Values[0]);
+                    int b = Convert.ToInt32(liveChartValueSeries[j + 1].Values[0]);
                     Thread.Sleep(100);
 
                     if (a > b)
                     {
-                        LiveChartValueSeries[j].Values.Clear();
-                        LiveChartValueSeries[j + 1].Values.Clear();
+                        liveChartValueSeries[j].Values.Clear();
+                        liveChartValueSeries[j + 1].Values.Clear();
 
-                        LiveChartValueSeries[j].Values.Add(b);
-                        LiveChartValueSeries[j + 1].Values.Add(a);
+                        liveChartValueSeries[j].Values.Add(b);
+                        liveChartValueSeries[j + 1].Values.Add(a);
 
                         ChangeColor(j, Brushes.LightGreen);
                         ChangeColor(j + 1, Brushes.LightGreen);
@@ -299,20 +298,20 @@ namespace SortingAlgorythms
         //Quick sort
         private void QuickSortBTN_Click(object sender, RoutedEventArgs e)
         {
-            setRunTimeLabels(2);
-            resetToUnordered();
+            SetRunTimeLabels(2);
+            ResetToUnordered();
             int[] ChartValueArray = new int[sizeOfChartArray];
             for (int i = 0; i < sizeOfChartArray; i++)
             {
-                ChartValueArray[i] = getSeriesElement(i);
+                ChartValueArray[i] = GetSeriesElement(i);
             }
             new Thread(() =>
             {
                 startDate = DateTime.Now;
                 dispatcherTimer.Start();
-                setEnableForAllButtons(false);
+                SetEnableForAllButtons(false);
                 Quick_Sort(ChartValueArray, 0, sizeOfChartArray - 1);
-                setEnableForAllButtons(true);
+                SetEnableForAllButtons(true);
                 dispatcherTimer.Stop();
             }).Start();
         }
@@ -369,8 +368,8 @@ namespace SortingAlgorythms
 
                     int temp = arr[left];
 
-                    setSeriesElement(left, arr[right]);
-                    setSeriesElement(right, temp);
+                    SetSeriesElement(left, arr[right]);
+                    SetSeriesElement(right, temp);
 
                     arr[left] = arr[right];
                     arr[right] = temp;
@@ -396,12 +395,12 @@ namespace SortingAlgorythms
         //Merge sort
         private void MergeSortBTN_Click(object sender, RoutedEventArgs e)
         {
-            setRunTimeLabels(3);
-            resetToUnordered();
+            SetRunTimeLabels(3);
+            ResetToUnordered();
             List<int> chartValueList = new List<int>();
             for (int i = 0; i < sizeOfChartArray; i++)
             {
-                chartValueList.Add(getSeriesElement(i));
+                chartValueList.Add(GetSeriesElement(i));
             }
 
             List<int> indexList = new List<int>();
@@ -413,14 +412,14 @@ namespace SortingAlgorythms
             {
                 startDate = DateTime.Now;
                 dispatcherTimer.Start();
-                setEnableForAllButtons(false);
+                SetEnableForAllButtons(false);
                 chartValueList = MergeSort(chartValueList, indexList);
                 Thread.Sleep(100);
                 for (int i = 0; i < chartValueList.Count; i++)
                 {
-                    setSeriesElement(i, chartValueList[i]);
+                    SetSeriesElement(i, chartValueList[i]);
                 }
-                setEnableForAllButtons(true);
+                SetEnableForAllButtons(true);
                 dispatcherTimer.Stop();
 
             }).Start();
@@ -522,7 +521,7 @@ namespace SortingAlgorythms
 
             for (int i = 0; i < indexResult.Count; i++)
             {
-                setSeriesElement(indexResult[i], result[i]);
+                SetSeriesElement(indexResult[i], result[i]);
             }
             Thread.Sleep(100);
             return result;
@@ -530,20 +529,20 @@ namespace SortingAlgorythms
         //Heap sort
         private void HeapSortBTN_Click(object sender, RoutedEventArgs e)
         {
-            setRunTimeLabels(4);
-            resetToUnordered();
+            SetRunTimeLabels(4);
+            ResetToUnordered();
             int[] ChartValueArray = new int[sizeOfChartArray];
             for (int i = 0; i < sizeOfChartArray; i++)
             {
-                ChartValueArray[i] = getSeriesElement(i);
+                ChartValueArray[i] = GetSeriesElement(i);
             }
             new Thread(() =>
             {
                 startDate = DateTime.Now;
                 dispatcherTimer.Start();
-                setEnableForAllButtons(false);
+                SetEnableForAllButtons(false);
                 HeapSort(ChartValueArray);
-                setEnableForAllButtons(true);
+                SetEnableForAllButtons(true);
                 dispatcherTimer.Stop();
             }).Start();
         }
@@ -558,8 +557,8 @@ namespace SortingAlgorythms
             {
                 int temp = array[0];
 
-                setSeriesElement(0, array[i]);
-                setSeriesElement(i, temp);
+                SetSeriesElement(0, array[i]);
+                SetSeriesElement(i, temp);
                 Thread.Sleep(100);
 
                 array[0] = array[i];
@@ -612,8 +611,8 @@ namespace SortingAlgorythms
                 Thread.Sleep(100);
 
 
-                setSeriesElement(i, array[largest]);
-                setSeriesElement(largest, swap);
+                SetSeriesElement(i, array[largest]);
+                SetSeriesElement(largest, swap);
                 Thread.Sleep(100);
 
                 array[i] = array[largest];
@@ -622,5 +621,6 @@ namespace SortingAlgorythms
             }
         }
 
+        
     }
 }

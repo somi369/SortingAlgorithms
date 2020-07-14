@@ -66,9 +66,9 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Foreground="White" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Array size:" FontFamily="Century Gothic"></Label>
-                    <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" FontFamily="Century Gothic"  />
+                    <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ElementName=ArraySizeSL, Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" FontFamily="Century Gothic"  />
                 </Grid>
-                <Slider  Minimum="10" Maximum="100" Width="150" VerticalAlignment="Center" TickPlacement="None"  TickFrequency="1" IsSnapToTickEnabled="True" Name="slValue"  Thumb.DragCompleted="slValue_DragCompleted"/>
+                <Slider  Minimum="10" Maximum="100" Width="150" VerticalAlignment="Center" TickPlacement="None"  TickFrequency="1" IsSnapToTickEnabled="True" Name="ArraySizeSL"  Thumb.DragCompleted="ArraySizeSL_DragCompleted"/>
 
             </StackPanel>
             <Button Content="X" x:Name="XBTN" Width="70" Height="25" HorizontalContentAlignment="Right" BorderThickness="0" Click="XBTN_Click" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{x:Null}" Foreground="White" FontFamily="Century Gothic" FontSize="18" Grid.Column="2" />
@@ -79,7 +79,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="4*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="StackPanel0" Grid.Column="0">
+            <StackPanel x:Name="MenuSP" Grid.Column="0">
                 <Button Content="Selection sort" Style="{StaticResource MyButton2}" x:Name="SelectionSortBTN" Click="SelectionSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18" />
                 <Button Content="Bubble sort" Style="{StaticResource MyButton2}" x:Name="BubbleSortBTN" Click="BubbleSortBTN_Click" BorderThickness="0" FontFamily="Century Gothic" FontSize="18"></Button>
                 <Button Content="Quick sort" Style="{StaticResource MyButton2}"  x:Name="QuickSortBTN" Click="QuickSortBTN_Click" BorderThickness="0"  FontFamily="Century Gothic" FontSize="18"></Button>
@@ -88,8 +88,8 @@
                 <Label Content="Timer:" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 30 0 0"  />
                 <Label x:Name="TimerLBL" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" Content="--:--:--:--" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 <Label x:Name="InfoLBL" FontFamily="Century Gothic" FontSize="18" Foreground="White" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 30 0 0">-</Label>
-                <StackPanel  >
-                    <Grid >
+                <StackPanel>
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="6*"></ColumnDefinition>
                             <ColumnDefinition Width="3.5*"></ColumnDefinition>
@@ -109,11 +109,11 @@
                 </StackPanel>
 
             </StackPanel>
-            <StackPanel x:Name="StackPanel1" Grid.Column="1" Margin="0,0,0,10" >
+            <StackPanel x:Name="LiveChartSP" Grid.Column="1" Margin="0,0,0,10" >
 
-                <lvc:CartesianChart x:Name="firstChart" Series="{Binding LiveChartValueSeries}"  Margin="10,10,10.2,10" Height="404" Hoverable="False" DataTooltip="{x:Null}" DisableAnimations="True" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+                <lvc:CartesianChart x:Name="LiveCHART1" Series="{Binding liveChartValueSeries}"  Margin="10,10,10.2,10" Height="404" Hoverable="False" DataTooltip="{x:Null}" DisableAnimations="True" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Y" LabelFormatter="{Binding Formatter}" MinValue="0"></lvc:Axis>
+                        <lvc:Axis Title="Y" LabelFormatter="{Binding formatter}" MinValue="0"></lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
 
